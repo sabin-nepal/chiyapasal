@@ -1,3 +1,4 @@
+import 'package:chiyapasal/src/core/res/route.dart';
 import 'package:chiyapasal/src/notifier/auth_notifier.dart';
 import 'package:chiyapasal/src/ui/home.dart';
 import 'package:chiyapasal/src/ui/auth/login.dart';
@@ -15,6 +16,8 @@ class MyApp extends StatelessWidget {
         child: MaterialApp(
           title: 'Chiya Pasal',
           debugShowCheckedModeBanner: false,
+          routes: AppRoutes.routes,
+          onGenerateRoute: AppRoutes.generateRoute,
           theme: ThemeData(
             primarySwatch: Colors.blue,
           ),
