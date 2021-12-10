@@ -16,19 +16,12 @@ class FirebaseAuthProvider {
     }
   }
 
-  Future<User?> initUser() async{
+  Future<User?> initUser() async {
     User? user = firebaseAuth.currentUser;
-    if(user !=null){
+    if (user != null) {
       return user;
     }
     return null;
-  }
-
-  bool isLogin() {
-    if (firebaseAuth.currentUser != null) {
-      return true;
-    }
-    return false;
   }
 
   Future<void> signOut() async {

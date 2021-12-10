@@ -14,7 +14,8 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
-  final _formData = {"email": "", "password": ""};
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
   _showErrorDialog({String? message}) {
     message = message ?? "Email and Password Required";
@@ -50,8 +51,10 @@ class _LoginPageState extends State<LoginPage> {
                     height: 20,
                   ),
                   TextFormField(
-                    keyboardType: TextInputType.emailAddress,
-                    onSaved: (val) => _formData['email'] = val!,
+                    controller: emailController,
+                      textInputAction: TextInputAction.next,
+                      keyboardType: TextInputType.emailAddress,
+                      
                   ),
                   const SizedBox(height: 30),
                   const Text(
@@ -62,25 +65,26 @@ class _LoginPageState extends State<LoginPage> {
                     height: 20,
                   ),
                   TextFormField(
+                    controller: passwordController,
                     obscureText: true,
-                    onSaved: (val) => _formData['email'] = val!,
                   ),
                   const SizedBox(height: 30),
                   ElevatedButton(
-                      onPressed: () => _handleLogin, child: const Text("Login"))
+                      onPressed: () => _handleLogin(context),
+                      child: const Text("Login"))
                 ],
               )),
         ));
   }
 
-  _handleLogin() async {
-    if (_formData['email'] == null || _formData['password'] == null) {
-      _showErrorDialog();
+  _handleLogin(BuildContext context) async {
+    if (emailController.text.isEmpty || passwordController.text.isEmpty) {
+      return _showErrorDialog();
     }
     try {
       await Provider.of<AuthNotifier>(context, listen: false)
           .signInWithEmailAndPasword(
-              email: _formData['email']!, pasword: _formData['password']!);
+              email: emailController.text, pasword: passwordController.text);
     } on PlatformException catch (e) {
       _showErrorDialog(message: e.message);
     }

@@ -5,7 +5,7 @@ class User {
   factory User.fromJson(String id, Map<String, dynamic>? data) {
     return User(
       id: id,
-      isEditor: data!['editor'],
+      isEditor: data!['isEditor'] ?? false,
     );
   }
 }

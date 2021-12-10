@@ -6,11 +6,10 @@ import 'package:flutter/material.dart';
 class AuthNotifier extends ChangeNotifier {
   static final _authService = AuthService();
   static final _authProvider = FirebaseAuthProvider();
-  late User _fsUser;
-  bool get isLoggedin => _authProvider.isLogin();
-  User get fsUser => _fsUser;
+  User? _fsUser;
+  User? get fsUser => _fsUser;
 
-  AuthNotifier(){
+  AuthNotifier() {
     initUser();
   }
 
@@ -21,13 +20,15 @@ class AuthNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future initUser() async{
+  Future initUser() async {
     var user = await _authProvider.initUser();
     _fsUser = await _authService.getUser(user?.uid);
+    notifyListeners();
   }
 
   Future signOut() async {
     _authProvider.signOut();
+    _fsUser = null;
     notifyListeners();
   }
 }
