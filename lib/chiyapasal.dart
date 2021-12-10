@@ -1,6 +1,5 @@
 import 'package:chiyapasal/src/notifier/auth_notifier.dart';
-import 'package:chiyapasal/src/ui/admin/home.dart';
-import 'package:chiyapasal/src/ui/editor/home.dart';
+import 'package:chiyapasal/src/ui/home.dart';
 import 'package:chiyapasal/src/ui/auth/login.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -32,17 +31,10 @@ class ChiyaPasal extends StatelessWidget {
     return Consumer<AuthNotifier>(
       builder: (BuildContext context, AuthNotifier auth, _) {
         if (auth.fsUser!=null) {
-          return _userLoggedIn(context, auth);
+          return const HomePage();
         }
         return const LoginPage();
       },
     );
-  }
-
-  _userLoggedIn(BuildContext context, AuthNotifier auth) {
-    if (auth.fsUser!.isEditor) {
-      return const EditorHome();
-    }
-    return const HomePage();
   }
 }
