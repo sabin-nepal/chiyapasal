@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:chiyapasal/src/model/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
