@@ -27,7 +27,7 @@ class AuthNotifier extends ChangeNotifier {
   }
 
   Future signOut() async {
-    _authProvider.signOut();
+    await _authProvider.signOut();
     _fsUser = null;
     notifyListeners();
   }

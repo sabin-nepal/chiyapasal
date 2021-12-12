@@ -1,3 +1,5 @@
+import 'package:chiyapasal/src/ui/admin/user_list.dart';
+import 'package:chiyapasal/src/ui/admin/user_view.dart';
 import 'package:chiyapasal/src/ui/auction/auction_history.dart';
 import 'package:flutter/material.dart';
 
@@ -8,10 +10,13 @@ class AppRoutes {
   static const String mainScreen = "main_screen";
   static const String updateAuction = "update_auction";
   static const String auctionHistory = "auction_history";
+  static const String userList = "user_list";
+  static const String userView = "user_view";
 
   static final Map<String, Widget Function(BuildContext)> routes = {
     mainScreen: (_) => const HomePage(),
     updateAuction: (_) => const UpdateAuction(),
+    userList: (_) => const UserList(),
   };
 
   static Route generateRoute(RouteSettings settings) {
@@ -25,6 +30,13 @@ class AppRoutes {
                   date: _date,
                   userId: _userId,
                 ));
+      case userView:
+        Map _data = settings.arguments as Map;
+        String _userId = _data['userId'];
+        return MaterialPageRoute(
+            builder: (_) => UserView(
+                  userId: _userId,
+                ));          
       default:
         return _errorRoute();
     }

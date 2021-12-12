@@ -22,4 +22,8 @@ class AuctionService {
         .get();
     return response.docs.map((e) => e).toList();
   }
+
+  static Future deleteAuction(String id) async {
+    await auctionRef.doc(id).delete();
+  }
 }
