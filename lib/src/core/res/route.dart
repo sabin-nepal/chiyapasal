@@ -1,9 +1,7 @@
 import 'package:chiyapasal/src/ui/admin/user_list.dart';
 import 'package:chiyapasal/src/ui/admin/user_view.dart';
-import 'package:chiyapasal/src/ui/auction/auction_history.dart';
+import 'package:chiyapasal/src/ui/trade/update_trade.dart';
 import 'package:flutter/material.dart';
-
-import '../../ui/auction/update_auction.dart';
 import '../../ui/home.dart';
 
 class AppRoutes {
@@ -15,21 +13,21 @@ class AppRoutes {
 
   static final Map<String, Widget Function(BuildContext)> routes = {
     mainScreen: (_) => const HomePage(),
-    updateAuction: (_) => const UpdateAuction(),
+    updateAuction: (_) => const UpdateTrade(),
     userList: (_) => const UserList(),
   };
 
   static Route generateRoute(RouteSettings settings) {
     switch (settings.name) {
-      case auctionHistory:
-        Map _data = settings.arguments as Map;
-        DateTime _date = _data['date'];
-        String _userId = _data['userId'];
-        return MaterialPageRoute(
-            builder: (_) => AuctionHistory(
-                  date: _date,
-                  userId: _userId,
-                ));
+      // case auctionHistory:
+      //   Map _data = settings.arguments as Map;
+      //   DateTime _date = _data['date'];
+      //   String _userId = _data['userId'];
+      //   return MaterialPageRoute(
+      //       builder: (_) => AuctionHistory(
+      //             date: _date,
+      //             userId: _userId,
+      //           ));
       case userView:
         Map _data = settings.arguments as Map;
         String _userId = _data['userId'];

@@ -1,13 +1,13 @@
 import 'package:chiyapasal/src/core/res/sizes.dart';
 import 'package:chiyapasal/src/core/res/styles.dart';
 import 'package:chiyapasal/src/notifier/auth_notifier.dart';
-import 'package:chiyapasal/src/services/auction_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-import '../../model/auction.dart';
+import '../../model/trade.dart';
+import '../../services/trade_service.dart';
 
 class AuctionHistory extends StatefulWidget {
   final DateTime date;
@@ -36,7 +36,7 @@ class _AuctionHistoryState extends State<AuctionHistory> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Auction"),
+        title: const Text("Trade"),
       ),
       body: Container(
           padding: const EdgeInsets.all(AppSizes.padding),
@@ -60,15 +60,15 @@ class _AuctionHistoryState extends State<AuctionHistory> {
                   style: titleText,
                 ),
               ),
-              Expanded(child: _auctionListing())
+              Expanded(child: _tradeListing())
             ],
           )),
     );
   }
 
-  Widget _auctionListing() {
-    return FutureBuilder<List<QueryDocumentSnapshot<Auction>>>(
-      future: AuctionService.getAuction(widget.userId, widget.date),
+  Widget _tradeListing() {
+    return FutureBuilder<List<QueryDocumentSnapshot<Trade>>>(
+      future: TradeService.getTradeList(widget.userId, widget.date),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
@@ -79,7 +79,7 @@ class _AuctionHistoryState extends State<AuctionHistory> {
             itemCount: snapshot.data!.length,
             separatorBuilder: (context, i) => const Divider(),
             itemBuilder: (context, i) {
-              Auction data = snapshot.data![i].data();
+              Trade data = snapshot.data![i].data();
               var time = DateFormat.jm().format(data.createdAt);
               return ListTile(
                   leading: Text(time.toString()),
@@ -88,7 +88,7 @@ class _AuctionHistoryState extends State<AuctionHistory> {
                       ? IconButton(
                           icon: const Icon(Icons.delete,color: Colors.blue,),
                           onPressed: () async {
-                            await AuctionService.deleteAuction(data.id!);
+                            await TradeService.deleteTrade(data.id!);
                             setState(() {});
                           },
                         )

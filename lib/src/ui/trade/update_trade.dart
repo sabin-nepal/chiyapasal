@@ -1,19 +1,20 @@
 import 'package:chiyapasal/src/core/res/sizes.dart';
 import 'package:chiyapasal/src/core/res/styles.dart';
-import 'package:chiyapasal/src/model/auction.dart';
 import 'package:chiyapasal/src/notifier/auth_notifier.dart';
-import 'package:chiyapasal/src/services/auction_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class UpdateAuction extends StatefulWidget {
-  const UpdateAuction({Key? key}) : super(key: key);
+import '../../model/trade.dart';
+import '../../services/trade_service.dart';
+
+class UpdateTrade extends StatefulWidget {
+  const UpdateTrade({Key? key}) : super(key: key);
 
   @override
-  State<UpdateAuction> createState() => _UpdateAuctionState();
+  State<UpdateTrade> createState() => _UpdateTradeState();
 }
 
-class _UpdateAuctionState extends State<UpdateAuction> {
+class _UpdateTradeState extends State<UpdateTrade> {
   @override
   void initState() {
     super.initState();
@@ -37,7 +38,7 @@ class _UpdateAuctionState extends State<UpdateAuction> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Add Auction"),
+        title: const Text("Add Trade"),
       ),
       body: Container(
         padding: const EdgeInsets.all(AppSizes.paddingLg),
@@ -69,7 +70,7 @@ class _UpdateAuctionState extends State<UpdateAuction> {
     final updatedBy =
         Provider.of<AuthNotifier>(context, listen: false).fsUser?.id;
     try {
-      await auctionRef.add(Auction(
+      await tradeRef.add(Trade(
           title: _titleController.text,
           updatedBy: updatedBy!,
           createdAt: DateTime.now()));

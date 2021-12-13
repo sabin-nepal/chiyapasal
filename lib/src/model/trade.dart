@@ -1,17 +1,17 @@
-class Auction {
+class Trade {
   String? id;
   final String title;
   final DateTime createdAt;
   final String updatedBy;
 
-  Auction(
+  Trade(
       {
       this.id,
       required this.title,
       required this.createdAt,
       required this.updatedBy});
 
-  Auction.fromJson(String id, Map<String, dynamic> data)
+  Trade.fromJson(String id, Map<String, dynamic> data)
       : this(
           id: id,
           title: data['title'],
