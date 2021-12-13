@@ -18,7 +18,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   List<Widget> _tabPages = [];
   int _selectedIndex = 0;
-  bool _isEditor = true;
   @override
   void initState() {
     super.initState();
@@ -26,8 +25,6 @@ class _HomePageState extends State<HomePage> {
       const HomeTab(),
       const AuctionTab(),
     ];
-    _isEditor =
-        Provider.of<AuthNotifier>(context, listen: false).fsUser!.isEditor;
   }
 
   void _onItemTapped(int index) {
@@ -42,46 +39,10 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: const Text("ChiyaPasal"),
       ),
-      drawer: _drawer(context),
       bottomNavigationBar: _bottomNavigationBar(context),
       body: IndexedStack(
         children: _tabPages,
         index: _selectedIndex,
-      ),
-    );
-  }
-
-  Widget _drawer(BuildContext context) {
-    return Drawer(
-      child: ListView(
-        padding: const EdgeInsets.all(AppSizes.paddingLg),
-        children: [
-          DrawerHeader(
-            child: Image.asset('assets/chiyapasal.png'),
-          ),
-          const SizedBox(
-            height: 30,
-          ),
-          if (!_isEditor)
-            InkWell(
-              child: const Text("User", style: boldText),
-              onTap: () {
-                Navigator.of(context).pushNamed(AppRoutes.userList);
-              },
-            ),
-          const SizedBox(
-            height: 30,
-          ),
-          InkWell(
-            child: const Text(
-              "Logout",
-              style: boldText,
-            ),
-            onTap: () async {
-              await Provider.of<AuthNotifier>(context, listen: false).signOut();
-            },
-          )
-        ],
       ),
     );
   }

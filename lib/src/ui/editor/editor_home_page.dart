@@ -1,4 +1,5 @@
 import 'package:chiyapasal/src/core/res/route.dart';
+import 'package:chiyapasal/src/core/res/styles.dart';
 import 'package:chiyapasal/src/notifier/auth_notifier.dart';
 import 'package:chiyapasal/src/services/trade_service.dart';
 import 'package:chiyapasal/src/ui/shared/custom_list_view.dart';
@@ -45,6 +46,14 @@ class EditorHomePage extends StatelessWidget {
           }
           if (snapshot.hasData) {
             var response = snapshot.data!.docs.map((e) => e).toList();
+            if (response.isEmpty) {
+              return const Center(
+                child: Text(
+                  "You can see your daily data here. Add Some to view",
+                  style: titleText,
+                ),
+              );
+            }
             return ListView.builder(
               itemCount: response.length,
               itemBuilder: (context, i) {
@@ -58,7 +67,12 @@ class EditorHomePage extends StatelessWidget {
               },
             );
           }
-          return Container();
+          return const Center(
+            child: Text(
+              "Something went Wrong!! Check Your Internet Connection and try again!!!",
+              style: titleText,
+            ),
+          );
         });
   }
 
