@@ -1,7 +1,9 @@
+import 'package:chiyapasal/src/core/res/colors.dart';
 import 'package:flutter/material.dart';
 
 const TextStyle boldText = TextStyle(
   fontWeight: FontWeight.bold,
+  color: Colors.black
 );
 const TextStyle titleText = TextStyle(
   color: Colors.black,
