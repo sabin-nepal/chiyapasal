@@ -1,4 +1,5 @@
 import 'package:chiyapasal/src/core/res/assets.dart';
+import 'package:chiyapasal/src/core/res/route.dart';
 import 'package:chiyapasal/src/notifier/auth_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -15,10 +16,11 @@ class DrawerMenu extends StatelessWidget {
           DrawerHeader(
             child: Image.asset(AppAssets.logo),
           ),
-          if(!authNotifier.fsUser!.isEditor) ...[
-            
-            const SizedBox(height:10)
-          ],
+
+          GestureDetector(
+            child: const Text("Add Product"),
+            onTap: ()=> Navigator.pushNamed(context, AppRoutes.addProduct),
+          ),
             
           GestureDetector(
             onTap: () async{
