@@ -2,7 +2,7 @@ import 'package:chiyapasal/src/core/res/colors.dart';
 import 'package:chiyapasal/src/core/res/sizes.dart';
 import 'package:chiyapasal/src/core/res/styles.dart';
 import 'package:chiyapasal/src/services/product_service.dart';
-import 'package:chiyapasal/src/ui/shared/custom_list_view.dart';
+import 'package:chiyapasal/src/ui/shared/product_list_view.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -16,66 +16,64 @@ class ProductTab extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(AppSizes.padding),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      "Total Products",
-                      style: boldTitleText,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    "Total Products",
+                    style: boldTitleText,
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  const Text(
+                    "200",
+                    style: boldText,
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: AppColors.secondaryColor.withOpacity(0.1),
+                      shape: BoxShape.rectangle,
+                      borderRadius: BorderRadius.circular(8),
                     ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    const Text(
-                      "200",
-                      style: boldText,
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: AppColors.secondaryColor.withOpacity(0.1),
-                        shape: BoxShape.rectangle,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Row(
-                        children: [
-                          Container(
-                              decoration: BoxDecoration(
+                    child: Row(
+                      children: [
+                        Container(
+                            decoration: BoxDecoration(
+                              color: AppColors.secondaryColor,
+                              shape: BoxShape.rectangle,
+                              border: Border.all(
                                 color: AppColors.secondaryColor,
-                                shape: BoxShape.rectangle,
-                                border: Border.all(
-                                  color: AppColors.secondaryColor,
-                                  width: 2,
-                                ),
-                                borderRadius: BorderRadius.circular(8),
+                                width: 2,
                               ),
-                              child: const Icon(
-                                Icons.arrow_upward,
-                                color: AppColors.bgWhiteColor,
-                              )),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          const Text(
-                            "+8.34%",
-                            style: TextStyle(
-                                color: AppColors.secondaryColor, fontSize: 12),
-                          ),
-                          const SizedBox(
-                            width: 7,
-                          )
-                        ],
-                      ),
-                    )
-                  ],
-                ),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: const Icon(
+                              Icons.arrow_upward,
+                              color: AppColors.bgWhiteColor,
+                            )),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        const Text(
+                          "+8.34%",
+                          style: TextStyle(
+                              color: AppColors.secondaryColor, fontSize: 12),
+                        ),
+                        const SizedBox(
+                          width: 7,
+                        )
+                      ],
+                    ),
+                  )
+                ],
               ),
               const Spacer(),
               Padding(
@@ -138,6 +136,14 @@ class ProductTab extends StatelessWidget {
               ),
             ],
           ),
+          const SizedBox(
+            height: 25,
+          ),
+          const Text(
+            "Products List",
+            style: boldTitleText,
+          ),
+          const SizedBox(height: 20,),
           Expanded(child: _productList(context)),
         ],
       ),
@@ -156,8 +162,11 @@ class ProductTab extends StatelessWidget {
             itemBuilder: (_, i) {
               var data = response[i];
               Product product = data.data();
-              return CustomListView(
-                title: Text(product.title.toString()),
+              return InkWell(
+                onTap: (){},
+                child: ProductListView(
+                  product: product,
+                ),
               );
             },
           );
