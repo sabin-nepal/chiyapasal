@@ -60,11 +60,10 @@ class _ProductFormState extends State<ProductForm> {
                   TextFormField(
                     initialValue: widget.productData.title,
                     onSaved: (val) => widget.productData.title = val,
-                    validator:(val){
-                      if(val!.isEmpty){
+                    validator: (val) {
+                      if (val!.isEmpty) {
                         return 'Field Cannot be empty';
-                      }
-                      else{
+                      } else {
                         return null;
                       }
                     },
@@ -123,10 +122,9 @@ class _ProductFormState extends State<ProductForm> {
     }
   }
 
-  bool validate(){
+  bool validate() {
     final valid = _formKey.currentState!.validate();
-    if(valid) _formKey.currentState!.save();
+    if (valid) _formKey.currentState!.save();
     return valid;
   }
-
 }
