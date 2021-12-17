@@ -5,6 +5,7 @@ import 'package:chiyapasal/src/services/media_service.dart';
 import 'package:chiyapasal/src/services/product_service.dart';
 import 'package:flutter/material.dart';
 
+import '../../model/product_form_data.dart';
 import '../shared/product_form.dart';
 
 class AddProduct extends StatefulWidget {
@@ -94,10 +95,4 @@ class _AddProductState extends State<AddProduct> {
       isLoading = false;
     });
   }
-}
-
-class ProductData {
-  String? title;
-  File? image;
-  ProductData({this.title, this.image});
 }

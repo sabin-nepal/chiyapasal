@@ -2,20 +2,23 @@ import 'dart:io';
 
 import 'package:chiyapasal/src/core/res/sizes.dart';
 import 'package:chiyapasal/src/core/res/styles.dart';
-import 'package:chiyapasal/src/ui/screen/add_product.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+
+import '../../model/product_form_data.dart';
 
 typedef OnDelete = Function();
 
 class ProductForm extends StatefulWidget {
   final ProductData productData;
-  final OnDelete onDelete;
+  final OnDelete? onDelete;
   final state = _ProductFormState();
+  final bool isEdit;
   ProductForm({
     Key? key,
     required this.productData,
-    required this.onDelete,
+    this.onDelete,
+    this.isEdit = false,
   }) : super(key: key);
 
   @override
@@ -27,6 +30,14 @@ class ProductForm extends StatefulWidget {
 class _ProductFormState extends State<ProductForm> {
   final _formKey = GlobalKey<FormState>();
   File? imageFile;
+  late bool _isExpand;
+
+  @override
+  void initState() {
+    super.initState();
+    _isExpand = !widget.isEdit;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -45,40 +56,64 @@ class _ProductFormState extends State<ProductForm> {
                         "Product",
                         style: titleText,
                       ),
-                      IconButton(
-                        icon: const Icon(
-                          Icons.minimize_outlined,
-                          color: Colors.red,
+                      if (!widget.isEdit)
+                        IconButton(
+                          icon: const Icon(
+                            Icons.minimize_outlined,
+                            color: Colors.red,
+                          ),
+                          onPressed: widget.onDelete,
                         ),
-                        onPressed: widget.onDelete,
-                      ),
                     ],
                   ),
                   const SizedBox(
                     height: 10,
                   ),
-                  TextFormField(
-                    initialValue: widget.productData.title,
-                    onSaved: (val) => widget.productData.title = val,
-                    validator: (val) {
-                      if (val!.isEmpty) {
-                        return 'Field Cannot be empty';
-                      } else {
-                        return null;
-                      }
-                    },
-                    decoration: const InputDecoration(
-                        labelText: "Title", hintText: "Product Title"),
-                  ),
-                  const SizedBox(height: 15),
-                  if (imageFile != null)
-                    SizedBox(
-                        height: 200, width: 500, child: Image.file(imageFile!)),
-                  GestureDetector(
-                    child: const Text("Choose Image"),
-                    onTap: () => _showImagePickerOptions(context),
-                  ),
+                  if (widget.isEdit) ...[
+                    TextFormField(
+                      initialValue: widget.productData.income.toString(),
+                      keyboardType: TextInputType.number,
+                      onSaved: (val) =>
+                          widget.productData.income = int.parse(val!),
+                    ),
+                    TextFormField(
+                      initialValue: widget.productData.out.toString(),
+                      keyboardType: TextInputType.number,
+                      onSaved: (val) =>
+                          widget.productData.out = int.parse(val!),
+                    )
+                  ],
+                  if (_isExpand) ...[
+                    TextFormField(
+                      initialValue: widget.productData.title,
+                      onSaved: (val) => widget.productData.title = val,
+                      validator: (val) {
+                        if (val!.isEmpty) {
+                          return 'Field Cannot be empty';
+                        } else {
+                          return null;
+                        }
+                      },
+                      decoration: const InputDecoration(
+                          labelText: "Title", hintText: "Product Title"),
+                    ),
+                    const SizedBox(height: 15),
+                    if (imageFile != null ||
+                        widget.productData.imagePath != null)
+                      SizedBox(
+                          height: 200,
+                          width: 500,
+                          child: imageFile != null
+                              ? Image.file(imageFile!)
+                              : Image.network(widget.productData.imagePath!)),
+                    GestureDetector(
+                      child: const Text("Choose Image"),
+                      onTap: () => _showImagePickerOptions(context),
+                    ),
+                  ],
                   const SizedBox(height: 10),
+                  if(widget.isEdit)
+                  _buildToggle(context),
                 ],
               ),
             ),
@@ -86,6 +121,17 @@ class _ProductFormState extends State<ProductForm> {
         ));
   }
 
+  Widget _buildToggle(BuildContext context) {
+    return GestureDetector(
+      onTap: _toggle,
+      child: Text(_isExpand ? 'Hide' : 'Show'),
+    );
+  }
+
+  void _toggle(){
+    _isExpand = !_isExpand;
+    setState((){});
+  }
   _showImagePickerOptions(BuildContext context) {
     showModalBottomSheet(
         context: context,

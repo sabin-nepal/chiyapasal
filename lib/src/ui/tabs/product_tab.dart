@@ -1,4 +1,5 @@
 import 'package:chiyapasal/src/core/res/colors.dart';
+import 'package:chiyapasal/src/core/res/route.dart';
 import 'package:chiyapasal/src/core/res/sizes.dart';
 import 'package:chiyapasal/src/core/res/styles.dart';
 import 'package:chiyapasal/src/services/product_service.dart';
@@ -143,7 +144,9 @@ class ProductTab extends StatelessWidget {
             "Products List",
             style: boldTitleText,
           ),
-          const SizedBox(height: 20,),
+          const SizedBox(
+            height: 20,
+          ),
           Expanded(child: _productList(context)),
         ],
       ),
@@ -163,7 +166,9 @@ class ProductTab extends StatelessWidget {
               var data = response[i];
               Product product = data.data();
               return InkWell(
-                onTap: (){},
+                onTap: () => Navigator.pushNamed(
+                    context, AppRoutes.updateProduct,
+                    arguments: {'product': product}),
                 child: ProductListView(
                   product: product,
                 ),
