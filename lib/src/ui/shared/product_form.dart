@@ -2,19 +2,26 @@ import 'dart:io';
 
 import 'package:chiyapasal/src/core/res/sizes.dart';
 import 'package:chiyapasal/src/core/res/styles.dart';
+import 'package:chiyapasal/src/ui/screen/add_product.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 typedef OnDelete = Function();
 
 class ProductForm extends StatefulWidget {
+  final ProductData productData;
   final OnDelete onDelete;
-  final Function imagePath;
-  const ProductForm({Key? key, required this.onDelete, required this.imagePath})
-      : super(key: key);
+  final state = _ProductFormState();
+  ProductForm({
+    Key? key,
+    required this.productData,
+    required this.onDelete,
+  }) : super(key: key);
 
   @override
-  State<ProductForm> createState() => _ProductFormState();
+  State<ProductForm> createState() => state;
+
+  bool isValid() => state.validate();
 }
 
 class _ProductFormState extends State<ProductForm> {
@@ -51,6 +58,16 @@ class _ProductFormState extends State<ProductForm> {
                     height: 10,
                   ),
                   TextFormField(
+                    initialValue: widget.productData.title,
+                    onSaved: (val) => widget.productData.title = val,
+                    validator:(val){
+                      if(val!.isEmpty){
+                        return 'Field Cannot be empty';
+                      }
+                      else{
+                        return null;
+                      }
+                    },
                     decoration: const InputDecoration(
                         labelText: "Title", hintText: "Product Title"),
                   ),
@@ -101,8 +118,15 @@ class _ProductFormState extends State<ProductForm> {
     if (_file?.path != null) {
       setState(() {
         imageFile = File(_file!.path);
+        widget.productData.image = imageFile;
       });
-      widget.imagePath(imageFile!);
     }
   }
+
+  bool validate(){
+    final valid = _formKey.currentState!.validate();
+    if(valid) _formKey.currentState!.save();
+    return valid;
+  }
+
 }

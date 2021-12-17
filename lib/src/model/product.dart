@@ -2,8 +2,8 @@ class Product {
   final String? id;
   final String title;
   final String imagePath;
-  final String income;
-  final String outgo;
+  final int income;
+  final int outgo;
   final DateTime createdAt;
 
   Product({
