@@ -10,6 +10,11 @@ const TextStyle titleText = TextStyle(
   fontSize: 12.0,
   fontWeight: FontWeight.w800,
 );
+const TextStyle boldTitleText = TextStyle(
+  color: Colors.grey,
+  fontSize: 12.0,
+  fontWeight: FontWeight.bold,
+);
 const TextStyle subTitleText = TextStyle(
   color: Colors.black,
   fontSize: 10.0,

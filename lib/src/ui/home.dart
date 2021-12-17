@@ -1,13 +1,8 @@
-import 'package:chiyapasal/src/core/res/route.dart';
-import 'package:chiyapasal/src/core/res/sizes.dart';
-import 'package:chiyapasal/src/core/res/styles.dart';
-import 'package:chiyapasal/src/notifier/auth_notifier.dart';
 import 'package:chiyapasal/src/ui/shared/drawer.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
-import 'widgets/auction_tab.dart';
-import 'widgets/home_tab.dart';
+import 'tabs/auction_tab.dart';
+import 'tabs/home_tab.dart';
+import 'tabs/product_tab.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -24,6 +19,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     _tabPages = [
       const HomeTab(),
+      const ProductTab(),
       const AuctionTab(),
     ];
   }
@@ -56,7 +52,7 @@ class _HomePageState extends State<HomePage> {
       items: [
         BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
         BottomNavigationBarItem(
-            icon: Icon(Icons.workspaces), label: "Daily Auction"),
+            icon: Icon(Icons.production_quantity_limits), label: "Product"),
       ],
     );
   }

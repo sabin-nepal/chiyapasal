@@ -3,7 +3,7 @@ class Product {
   final String title;
   final String imagePath;
   final int income;
-  final int outgo;
+  final int out;
   final DateTime createdAt;
 
   Product({
@@ -11,7 +11,7 @@ class Product {
     required this.title,
     required this.imagePath,
     required this.income,
-    required this.outgo,
+    required this.out,
     required this.createdAt,
   });
 
@@ -21,8 +21,8 @@ class Product {
           title: data['title'],
           imagePath: data['imagePath'],
           income: data['income'],
-          outgo: data['outgo'],
-          createdAt: data['createdAt'],
+          out: data['out'],
+          createdAt: data['createdAt'].toDate(),
         );
 
   Map<String, dynamic> toJson() {
@@ -30,7 +30,7 @@ class Product {
       'title': title,
       'imagePath': imagePath,
       'income': income,
-      'outgo': outgo,
+      'out': out,
       'createdAt': createdAt,
     };
   }

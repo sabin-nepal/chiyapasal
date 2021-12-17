@@ -2,7 +2,6 @@ import 'package:chiyapasal/src/core/res/route.dart';
 import 'package:chiyapasal/src/core/res/styles.dart';
 import 'package:chiyapasal/src/notifier/auth_notifier.dart';
 import 'package:chiyapasal/src/services/trade_service.dart';
-import 'package:chiyapasal/src/ui/shared/custom_list_view.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -60,9 +59,24 @@ class EditorHomePage extends StatelessWidget {
                 var data = response[i];
                 Trade trade = data.data();
                 var time = DateFormat.jm().format(trade.createdAt);
-                return CustomListView(
-                  title: Center(child: Text(trade.title)),
-                  leading: Text(time.toString()),
+                return Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: const BorderRadius.all(
+                        Radius.circular(AppSizes.padding)),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5),
+                        spreadRadius: 5,
+                        blurRadius: 7,
+                        offset: const Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  child: ListTile(
+                    title: Center(child: Text(trade.title)),
+                    leading: Text(time.toString()),
+                  ),
                 );
               },
             );

@@ -86,7 +86,7 @@ class _AddProductState extends State<AddProduct> {
             title: product.productData.title!,
             imagePath: imagePath,
             income: 0,
-            outgo: 0,
+            out: 0,
             createdAt: createdAt));
       }
     }
