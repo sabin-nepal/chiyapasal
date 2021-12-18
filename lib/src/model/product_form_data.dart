@@ -6,5 +6,6 @@ class ProductData {
   String? imagePath;
   int? income;
   int? out;
-  ProductData({this.title, this.image, this.imagePath, this.income, this.out});
+  ProductData(
+      {this.title, this.image, this.imagePath, this.income = 0, this.out});
 }

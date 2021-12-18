@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:chiyapasal/src/model/product.dart';
 import 'package:chiyapasal/src/services/media_service.dart';
 import 'package:chiyapasal/src/services/product_service.dart';
@@ -17,9 +15,8 @@ class AddProduct extends StatefulWidget {
 
 class _AddProductState extends State<AddProduct> {
   bool isLoading = false;
-  List<ProductForm> products = [
-    ProductForm(productData: ProductData(), onDelete: () {})
-  ];
+  String _message = "";
+  List<ProductForm> products = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,18 +29,22 @@ class _AddProductState extends State<AddProduct> {
           )
         ],
       ),
-      body: Stack(
-        children: [
-          ListView.builder(
-              addAutomaticKeepAlives: true,
-              itemCount: products.length,
-              itemBuilder: (_, i) => products[i]),
-          if (isLoading)
-            const Center(
-              child: CircularProgressIndicator(),
+      body: products.isEmpty
+          ? const Center(
+              child: Text("Click on add icon to start  adding  product"),
             )
-        ],
-      ),
+          : Stack(
+              children: [
+                ListView.builder(
+                    addAutomaticKeepAlives: true,
+                    itemCount: products.length,
+                    itemBuilder: (_, i) => products[i]),
+                if (isLoading)
+                  const Center(
+                    child: CircularProgressIndicator(),
+                  )
+              ],
+            ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
         onPressed: () => onAddForm(),
@@ -81,15 +82,20 @@ class _AddProductState extends State<AddProduct> {
         isLoading = true;
       });
       for (var product in products) {
-        var imagePath =
-            await MediaService().uploadFile(product.productData.image);
-        await productRef.add(Product(
-            title: product.productData.title!,
-            imagePath: imagePath,
-            income: 0,
-            out: 0,
-            createdAt: createdAt));
+        try {
+          var imagePath ='';
+             // await MediaService().uploadFile(product.productData.image);
+          await productRef.add(Product(
+              title: product.productData.title!,
+              imagePath: imagePath,
+              income: product.productData.income ?? 0,
+              out: 0,
+              createdAt: createdAt));
+        } catch (e) {
+          _message = "Something went Wrong try again";
+        }
       }
+      products.clear();
     }
     setState(() {
       isLoading = false;

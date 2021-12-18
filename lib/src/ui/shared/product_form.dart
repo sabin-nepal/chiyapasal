@@ -1,6 +1,4 @@
 import 'dart:io';
-
-import 'package:chiyapasal/src/core/res/colors.dart';
 import 'package:chiyapasal/src/core/res/sizes.dart';
 import 'package:chiyapasal/src/core/res/styles.dart';
 import 'package:flutter/material.dart';
@@ -57,89 +55,58 @@ class _ProductFormState extends State<ProductForm> {
                         "Product",
                         style: titleText,
                       ),
-                      _buildToggle(context),
+                      if (!widget.isEdit)
+                        IconButton(
+                          icon: const Icon(
+                            Icons.minimize_outlined,
+                            color: Colors.red,
+                          ),
+                          onPressed: widget.onDelete,
+                        )
                     ],
                   ),
                   const SizedBox(
                     height: 10,
                   ),
-                  if (widget.isEdit) ...[
-                    TextFormField(
-                      initialValue: widget.productData.income.toString(),
-                      keyboardType: TextInputType.number,
-                      onSaved: (val) =>
-                          widget.productData.income = int.parse(val!),
-                      decoration: const InputDecoration(
-                          labelText: "Out Product", hintText: "Product Out"),
-                    ),
-                    TextFormField(
-                      initialValue: widget.productData.out.toString(),
-                      keyboardType: TextInputType.number,
-                      onSaved: (val) =>
-                          widget.productData.out = int.parse(val!),
-                      decoration: const InputDecoration(
-                          labelText: "Out Product", hintText: "Product Out"),
-                    )
-                  ],
-                  if (_isExpand) ...[
-                    TextFormField(
-                      initialValue: widget.productData.title,
-                      onSaved: (val) => widget.productData.title = val,
-                      validator: (val) {
-                        if (val!.isEmpty) {
-                          return 'Field Cannot be empty';
-                        } else {
-                          return null;
-                        }
-                      },
-                      decoration: const InputDecoration(
-                          labelText: "Title", hintText: "Product Title"),
-                    ),
-                    const SizedBox(height: 15),
-                    if (imageFile != null ||
-                        widget.productData.imagePath != null)
-                      SizedBox(
-                          height: 200,
-                          width: 500,
-                          child: imageFile != null
-                              ? Image.file(imageFile!)
-                              : Image.network(widget.productData.imagePath!)),
-                    GestureDetector(
-                      child: const Text("Choose Image"),
-                      onTap: () => _showImagePickerOptions(context),
-                    ),
-                  ],
+                  TextFormField(
+                    initialValue: widget.productData.income.toString(),
+                    keyboardType: TextInputType.number,
+                    onSaved: (val) =>
+                        widget.productData.income = int.parse(val!),
+                    decoration: const InputDecoration(
+                        labelText: "Total Product", hintText: "Total Product"),
+                  ),
+                  TextFormField(
+                    initialValue: widget.productData.title,
+                    onSaved: (val) => widget.productData.title = val,
+                    validator: (val) {
+                      if (val!.isEmpty) {
+                        return 'Field Cannot be empty';
+                      } else {
+                        return null;
+                      }
+                    },
+                    decoration: const InputDecoration(
+                        labelText: "Title", hintText: "Product Title"),
+                  ),
+                  const SizedBox(height: 15),
+                  if (imageFile != null || widget.productData.imagePath != null)
+                    SizedBox(
+                        height: 200,
+                        width: 500,
+                        child: imageFile != null
+                            ? Image.file(imageFile!)
+                            : Image.network(widget.productData.imagePath!)),
+                  GestureDetector(
+                    child: const Text("Choose Image"),
+                    onTap: () => _showImagePickerOptions(context),
+                  ),
                   const SizedBox(height: 10),
                 ],
               ),
             ),
           ),
         ));
-  }
-
-  Widget _buildToggle(BuildContext context) {
-    if (widget.isEdit) {
-      return GestureDetector(
-        onTap: _toggle,
-        child: Icon(
-          _isExpand ? Icons.minimize : Icons.add,
-          color: AppColors.primaryColor,
-        ),
-      );
-    }
-    return IconButton(
-      icon: const Icon(
-        Icons.minimize_outlined,
-        color: Colors.red,
-      ),
-      onPressed: widget.onDelete,
-    );
-  }
-
-  void _toggle() {
-    setState(() {
-      _isExpand = !_isExpand;
-    });
   }
 
   _showImagePickerOptions(BuildContext context) {
