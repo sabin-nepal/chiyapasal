@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:chiyapasal/src/core/res/colors.dart';
 import 'package:chiyapasal/src/core/res/sizes.dart';
 import 'package:chiyapasal/src/core/res/styles.dart';
 import 'package:flutter/material.dart';
@@ -56,14 +57,7 @@ class _ProductFormState extends State<ProductForm> {
                         "Product",
                         style: titleText,
                       ),
-                      if (!widget.isEdit)
-                        IconButton(
-                          icon: const Icon(
-                            Icons.minimize_outlined,
-                            color: Colors.red,
-                          ),
-                          onPressed: widget.onDelete,
-                        ),
+                      _buildToggle(context),
                     ],
                   ),
                   const SizedBox(
@@ -75,12 +69,16 @@ class _ProductFormState extends State<ProductForm> {
                       keyboardType: TextInputType.number,
                       onSaved: (val) =>
                           widget.productData.income = int.parse(val!),
+                      decoration: const InputDecoration(
+                          labelText: "Out Product", hintText: "Product Out"),
                     ),
                     TextFormField(
                       initialValue: widget.productData.out.toString(),
                       keyboardType: TextInputType.number,
                       onSaved: (val) =>
                           widget.productData.out = int.parse(val!),
+                      decoration: const InputDecoration(
+                          labelText: "Out Product", hintText: "Product Out"),
                     )
                   ],
                   if (_isExpand) ...[
@@ -112,8 +110,6 @@ class _ProductFormState extends State<ProductForm> {
                     ),
                   ],
                   const SizedBox(height: 10),
-                  if(widget.isEdit)
-                  _buildToggle(context),
                 ],
               ),
             ),
@@ -122,16 +118,30 @@ class _ProductFormState extends State<ProductForm> {
   }
 
   Widget _buildToggle(BuildContext context) {
-    return GestureDetector(
-      onTap: _toggle,
-      child: Text(_isExpand ? 'Hide' : 'Show'),
+    if (widget.isEdit) {
+      return GestureDetector(
+        onTap: _toggle,
+        child: Icon(
+          _isExpand ? Icons.minimize : Icons.add,
+          color: AppColors.primaryColor,
+        ),
+      );
+    }
+    return IconButton(
+      icon: const Icon(
+        Icons.minimize_outlined,
+        color: Colors.red,
+      ),
+      onPressed: widget.onDelete,
     );
   }
 
-  void _toggle(){
-    _isExpand = !_isExpand;
-    setState((){});
+  void _toggle() {
+    setState(() {
+      _isExpand = !_isExpand;
+    });
   }
+
   _showImagePickerOptions(BuildContext context) {
     showModalBottomSheet(
         context: context,
