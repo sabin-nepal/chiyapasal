@@ -15,7 +15,6 @@ class AddProduct extends StatefulWidget {
 
 class _AddProductState extends State<AddProduct> {
   bool isLoading = false;
-  String _message = "";
   List<ProductForm> products = [];
   @override
   Widget build(BuildContext context) {
@@ -52,6 +51,18 @@ class _AddProductState extends State<AddProduct> {
     );
   }
 
+  _showSnackBar(bool success, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(
+        message,
+        style: const TextStyle(
+          color: Colors.white,
+        ),
+      ),
+      backgroundColor: success ? Colors.green : Colors.red,
+    ));
+  }
+
   void onDelete(ProductData _productData) {
     setState(() {
       var find = products.firstWhere(
@@ -81,21 +92,22 @@ class _AddProductState extends State<AddProduct> {
       setState(() {
         isLoading = true;
       });
-      for (var product in products) {
-        try {
-          var imagePath ='';
-             // await MediaService().uploadFile(product.productData.image);
+      try {
+        for (var product in products) {
+          var imagePath =
+              await MediaService().uploadFile(product.productData.image);
           await productRef.add(Product(
               title: product.productData.title!,
               imagePath: imagePath,
               income: product.productData.income ?? 0,
               out: 0,
               createdAt: createdAt));
-        } catch (e) {
-          _message = "Something went Wrong try again";
         }
+        _showSnackBar(true, "Data Updated Successfully");
+        products.clear();
+      } catch (e) {
+        _showSnackBar(false, "Somethings Went Wrong..");
       }
-      products.clear();
     }
     setState(() {
       isLoading = false;
