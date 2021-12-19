@@ -1,7 +1,6 @@
 import 'package:chiyapasal/src/core/res/assets.dart';
 import 'package:chiyapasal/src/core/res/colors.dart';
 import 'package:chiyapasal/src/core/res/route.dart';
-import 'package:chiyapasal/src/core/res/sizes.dart';
 import 'package:chiyapasal/src/core/res/styles.dart';
 import 'package:chiyapasal/src/notifier/auth_notifier.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +29,20 @@ class DrawerMenu extends StatelessWidget {
               style: boldText,
             ),
             onTap: () => Navigator.pushNamed(context, AppRoutes.addProduct),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          ListTile(
+            leading: const Icon(
+              Icons.track_changes,
+              color: AppColors.primaryColor,
+            ),
+            title: const Text(
+              "Target",
+              style: boldText,
+            ),
+            onTap: () => Navigator.pushNamed(context, AppRoutes.target),
           ),
           const SizedBox(
             height: 10,

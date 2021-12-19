@@ -2,11 +2,21 @@ import 'package:chiyapasal/src/core/res/url_constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class OtherService {
-  static getTarget() {
-    var response = FirebaseFirestore.instance
-        .collection(UrlConstant.otherCollection)
+  var firebaseFirestore =
+      FirebaseFirestore.instance.collection(UrlConstant.otherCollection);
+
+  Future<void> saveTarget({required int product, required int stock}) async {
+    firebaseFirestore
         .doc('target')
-        .snapshots();
+        .set({'productTarget': product, 'stockTarget': stock});
+  }
+
+  Future fetchTarget() async {
+    return firebaseFirestore.doc('target').get();
+  }
+
+  Stream getTarget() {
+    var response = firebaseFirestore.doc('target').snapshots();
     return response;
   }
 }
