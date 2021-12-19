@@ -52,6 +52,18 @@ class _UpdateProductState extends State<UpdateProduct> {
     );
   }
 
+  _showSnackBar(bool success, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(
+        message,
+        style: const TextStyle(
+          color: Colors.white,
+        ),
+      ),
+      backgroundColor: success ? Colors.green : Colors.red,
+    ));
+  }
+
   void _saveData() async {
     var allValid = _productForm.isValid();
     if (allValid) {
@@ -60,16 +72,21 @@ class _UpdateProductState extends State<UpdateProduct> {
       });
       ProductData _product = _productForm.productData;
       String? imagePath = _product.imagePath;
-      if (_product.image != null) {
-        imagePath = await MediaService().uploadFile(_product.image);
-      }
+      try {
+        if (_product.image != null) {
+          imagePath = await MediaService().uploadFile(_product.image);
+        }
 
-      await productRef.doc(widget.product.id).set(Product(
-          title: _product.title!,
-          imagePath: imagePath!,
-          income: _product.income!,
-          out: _product.out!,
-          createdAt: widget.product.createdAt));
+        await productRef.doc(widget.product.id).set(Product(
+            title: _product.title!,
+            imagePath: imagePath!,
+            income: _product.income!,
+            out: _product.out!,
+            createdAt: widget.product.createdAt));
+        _showSnackBar(true, "Data Updated Successfully");
+      } catch (e) {
+        _showSnackBar(false, "Somethings Went Wrong..");
+      }
     }
     setState(() {
       _isLoading = false;
