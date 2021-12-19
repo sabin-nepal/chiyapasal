@@ -2,6 +2,9 @@ import 'package:chiyapasal/src/core/res/sizes.dart';
 import 'package:chiyapasal/src/core/res/styles.dart';
 import 'package:chiyapasal/src/services/other_service.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../notifier/target_notifier.dart';
 
 class TargetScreen extends StatefulWidget {
   const TargetScreen({Key? key}) : super(key: key);
@@ -23,13 +26,13 @@ class _TargetScreenState extends State<TargetScreen> {
 
   _fetchData() async {
     var target = await OtherService().fetchTarget();
-    _productTargetController.text = target['productTarget'].toString();
-    _stockTargetController.text = target['stockTarget'].toString();
+    _productTargetController.text = target['product'].toString();
+    _stockTargetController.text = target['stock'].toString();
   }
 
   void _saveData() async {
     if (_formKey.currentState!.validate()) {
-      await OtherService().saveTarget(
+      await Provider.of<TargetNotifier>(context, listen: false).setTarget(
           product: int.parse(_productTargetController.text),
           stock: int.parse(_stockTargetController.text));
     }

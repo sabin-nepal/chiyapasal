@@ -6,17 +6,15 @@ class OtherService {
       FirebaseFirestore.instance.collection(UrlConstant.otherCollection);
 
   Future<void> saveTarget({required int product, required int stock}) async {
-    firebaseFirestore
-        .doc('target')
-        .set({'productTarget': product, 'stockTarget': stock});
+    firebaseFirestore.doc('target').set({'product': product, 'stock': stock});
   }
 
   Future fetchTarget() async {
     return firebaseFirestore.doc('target').get();
   }
 
-  Stream getTarget() {
+  Stream<DocumentSnapshot<Map<String, dynamic>>> getTarget() {
     var response = firebaseFirestore.doc('target').snapshots();
-    return response;
+    return response.map((event) => event);
   }
 }

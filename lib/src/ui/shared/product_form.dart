@@ -73,6 +73,13 @@ class _ProductFormState extends State<ProductForm> {
                     keyboardType: TextInputType.number,
                     onSaved: (val) =>
                         widget.productData.income = int.parse(val!),
+                    validator: (val) {
+                      if (val!.isEmpty) {
+                        return 'Field Cannot be empty';
+                      } else {
+                        return null;
+                      }
+                    },
                     decoration: const InputDecoration(
                         labelText: "Total Product", hintText: "Total Product"),
                   ),

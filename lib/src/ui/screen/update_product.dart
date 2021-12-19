@@ -40,7 +40,7 @@ class _UpdateProductState extends State<UpdateProduct> {
         actions: [
           IconButton(
             icon: const Icon(Icons.delete),
-            onPressed: () async{
+            onPressed: () async {
               await productRef.doc(widget.product.id).delete();
               Navigator.pop(context);
             },
@@ -81,11 +81,10 @@ class _UpdateProductState extends State<UpdateProduct> {
       });
       ProductData _product = _productForm.productData;
       String? imagePath = _product.imagePath;
+      if (_product.image != null) {
+        imagePath = await MediaService().uploadFile(_product.image);
+      }
       try {
-        if (_product.image != null) {
-          imagePath = await MediaService().uploadFile(_product.image);
-        }
-
         await productRef.doc(widget.product.id).set(Product(
             title: _product.title!,
             imagePath: imagePath!,
