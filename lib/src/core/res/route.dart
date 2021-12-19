@@ -1,5 +1,6 @@
 import 'package:chiyapasal/src/ui/admin/user_list.dart';
 import 'package:chiyapasal/src/ui/admin/user_view.dart';
+import 'package:chiyapasal/src/ui/screen/target_screen.dart';
 import 'package:chiyapasal/src/ui/screen/update_product.dart';
 import 'package:chiyapasal/src/ui/trade/update_trade.dart';
 import 'package:flutter/material.dart';
@@ -14,13 +15,14 @@ class AppRoutes {
   static const String userView = "user_view";
   static const String addProduct = "add_product";
   static const String updateProduct = "update_product";
+  static const String target = "target";
 
   static final Map<String, Widget Function(BuildContext)> routes = {
     mainScreen: (_) => const HomePage(),
     updateAuction: (_) => const UpdateTrade(),
     userList: (_) => const UserList(),
     addProduct: (_) => const AddProduct(),
-    
+    target: (_) => const TargetScreen(),
   };
 
   static Route generateRoute(RouteSettings settings) {
@@ -40,14 +42,14 @@ class AppRoutes {
         return MaterialPageRoute(
             builder: (_) => UpdateProduct(
                   product: _product,
-                ));    
+                ));
       case userView:
         Map _data = settings.arguments as Map;
         String _userId = _data['userId'];
         return MaterialPageRoute(
             builder: (_) => UserView(
                   userId: _userId,
-                ));        
+                ));
       default:
         return _errorRoute();
     }

@@ -37,6 +37,15 @@ class _UpdateProductState extends State<UpdateProduct> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Update Product"),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.delete),
+            onPressed: () async{
+              await productRef.doc(widget.product.id).delete();
+              Navigator.pop(context);
+            },
+          )
+        ],
       ),
       bottomNavigationBar: _isLoading
           ? const Center(child: CircularProgressIndicator())
