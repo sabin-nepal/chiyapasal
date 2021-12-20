@@ -25,6 +25,15 @@ class TradeService {
     return response.docs.map((e) => e).toList();
   }
 
+  static Future<List<QueryDocumentSnapshot<Trade>>> getTradeByDate({
+      required DateTime startDate, required DateTime endDate}) async {
+    var response = await tradeRef
+        .where('createdAt',
+            isGreaterThanOrEqualTo: startDate, isLessThanOrEqualTo: endDate)
+        .get();
+    return response.docs.map((e) => e).toList();
+  }
+
   static Stream<QuerySnapshot<Trade>> getTrade(String userId, DateTime date) {
     DateTime _start = DateTime(date.year, date.month, date.day, 0, 0);
     DateTime _end = DateTime(date.year, date.month, date.day, 23, 59, 59);

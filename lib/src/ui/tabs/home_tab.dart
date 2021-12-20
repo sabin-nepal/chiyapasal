@@ -1,8 +1,14 @@
 import 'package:chiyapasal/src/core/res/colors.dart';
 import 'package:chiyapasal/src/core/res/sizes.dart';
 import 'package:chiyapasal/src/core/res/styles.dart';
+import 'package:chiyapasal/src/model/product.dart';
+import 'package:chiyapasal/src/services/product_service.dart';
+import 'package:chiyapasal/src/services/trade_service.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+
+import '../../model/trade.dart';
 
 class HomeTab extends StatefulWidget {
   const HomeTab({Key? key}) : super(key: key);
@@ -14,10 +20,14 @@ class HomeTab extends StatefulWidget {
 class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
   late TabController _tabController;
   final List _tabNames = ['1D', '1W', '1M', '3M', '6M', '1Y'];
+  int selectedTabIndex = 0;
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(vsync: this, length: 6, initialIndex: 0);
+    _tabController = TabController(vsync: this, length: 6);
+    _tabController.addListener(() {
+      selectedTabIndex = _tabController.index;
+    });
   }
 
   @override
@@ -104,6 +114,11 @@ class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
         TabBar(
           controller: _tabController,
           isScrollable: true,
+          onTap: (value) {
+            setState(() {
+              selectedTabIndex = value;
+            });
+          },
           tabs: _tabNames.map<Widget>((e) {
             return Container(
                 padding: const EdgeInsets.all(AppSizes.padding),
@@ -114,19 +129,52 @@ class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
           }).toList(),
         ),
         Container(
-          height: 300,
-          child: TabBarView(controller: _tabController, children: [
-            SfCartesianChart(
-              title: ChartTitle(text: "hello"),
-            ),
-            SfCartesianChart(),
-            SfCartesianChart(),
-            SfCartesianChart(),
-            SfCartesianChart(),
-            SfCartesianChart(),
-          ]),
-        ),
+          height: 20,
+          child: _chart(context)),
       ],
+    );
+  }
+
+ Widget _chart(BuildContext context) {
+   print(selectedTabIndex);
+    DateTime date = DateTime.now();
+    DateTime startDate;
+    DateTime endDate;
+    if (selectedTabIndex == 0) {
+      startDate = DateTime(date.year, date.month, date.day, 0, 0);
+      endDate = DateTime(date.year, date.month, date.day, 23, 59, 59);
+    } else if (selectedTabIndex == 1) {
+      startDate = DateTime(date.year, date.month, date.day);
+      endDate = DateTime(date.year, date.month, date.day + 6);
+    } else if (selectedTabIndex == 2) {
+      startDate = DateTime(date.year, date.month - 1, date.day);
+      endDate = DateTime(date.year, date.month, date.day);
+    } else if (selectedTabIndex == 3) {
+      startDate = DateTime(date.year, date.month - 3 , date.day);
+      endDate = DateTime(date.year, date.month, date.day);
+    } else if (selectedTabIndex == 4) {
+      startDate = DateTime(date.year, date.month - 6, date.day);
+      endDate = DateTime(date.year, date.month, date.day);
+    } else {
+      startDate = DateTime(date.year - 1, date.month, date.day);
+      endDate = DateTime(date.year, date.month, date.day);
+    }
+    return FutureBuilder<List<QueryDocumentSnapshot<Trade>>>(
+      future: TradeService.getTradeByDate(startDate:startDate, endDate:endDate),
+      builder: (context,snapshot){
+        if(snapshot.hasData){
+          return ListView.builder(
+            primary: false,
+            itemCount: snapshot.data!.length,
+            itemBuilder: (BuildContext context,i){
+              var data = snapshot.data![i];
+              print(data.data().title);
+              return Container();
+            },
+          );
+        }
+        return Container();
+      },
     );
   }
 }
